@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Attendance - Static Frontend</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/face-api.js/dist/face-api.min.js"
+    ></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="app-header">
+        <h1>📸 Smart Attendance</h1>
+      </header>
+
+      <div class="row">
+        <div class="col video-col">
+          <div class="camera-frame">
+            <video id="video" autoplay muted playsinline></video>
+            <canvas id="overlay"></canvas>
+          </div>
+        </div>
+        <div class="col controls">
+          <div class="card">
+            <input id="nameInput" placeholder="Enter name to register" />
+            <div class="btn-row">
+              <button id="registerBtn" class="btn primary">
+                Register Face
+              </button>
+              <button id="matchBtn" class="btn secondary">Scan & Match</button>
+              <button id="clearBtn" class="btn danger">Clear All</button>
+            </div>
+
+            <h3>Registered Faces</h3>
+            <ul id="registeredList" class="registered-list"></ul>
+
+            <h3>Attendance</h3>
+            <div class="btn-row">
+              <button id="downloadAttendance" class="btn">Download CSV</button>
+              <button id="clearAttendance" class="btn warn">
+                Clear Attendance
+              </button>
+            </div>
+
+            <div id="status" class="status info"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

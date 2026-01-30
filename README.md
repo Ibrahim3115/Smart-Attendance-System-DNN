@@ -1,0 +1,128 @@
+# Smart Attendance System
+
+A complete face recognition-based attendance system using CNN face detection and ONNX Facenet embeddings.
+
+## Features
+
+- 👤 **Face Registration**: Register faces with names using webcam
+- ✅ **Real-Time Attendance**: Automatically mark attendance using face recognition
+- 📊 **Attendance Log**: View and filter attendance records
+- 🔒 **Duplicate Prevention**: Prevents marking attendance multiple times per day
+
+## Requirements
+
+- Python 3.10+
+- Webcam access
+- Facenet ONNX model file (`facenet.onnx`)
+
+## Installation
+
+1. Clone or download this repository
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Add the Facenet ONNX model:
+   - Download or obtain `facenet.onnx` model file
+   - Place it in the `models/` directory
+   - The file should be at: `models/facenet.onnx`
+
+## Usage
+
+1. Start the application:
+
+```bash
+streamlit run app.py
+```
+
+2. The application will open in your default web browser
+
+3. **Register Faces**:
+   - Navigate to "Register Face" page
+   - Enter a name
+   - Capture face using the camera
+   - Click "Register Face" button
+
+4. **Mark Attendance**:
+   - Navigate to "Mark Attendance" page
+   - Click "Start Attendance"
+   - Position your face in front of the camera
+   - The system will automatically detect and mark attendance
+
+5. **View Attendance Log**:
+   - Navigate to "Attendance Log" page
+   - Filter by date or name
+   - Download CSV if needed
+
+## Project Structure
+
+```
+smart_attendance/
+│── app.py                          # Main Streamlit application
+│── requirements.txt                # Python dependencies
+│── README.md                      # This file
+│── models/
+│     └── facenet.onnx            # Facenet ONNX model (user-provided)
+│── utils/
+│     ├── __init__.py
+│     ├── face_detector.py        # Haar Cascade face detection
+│     ├── embedder.py             # ONNX embedding generation
+│     ├── database.py             # Embedding storage/retrieval
+│     └── attendance_manager.py   # Attendance marking logic
+│── data/
+│     ├── registered_faces/
+│     │     └── embeddings.pkl   # Stored face embeddings
+│     └── attendance.csv          # Attendance records
+│── assets/                       # UI resources (optional)
+```
+
+## Technical Details
+
+- **Face Detection**: Haar Cascade Classifier (OpenCV)
+- **Face Recognition**: Facenet ONNX model (128-dimensional embeddings)
+- **Matching**: Cosine similarity with configurable threshold (default: 0.5)
+- **Storage**: Pickle for embeddings, CSV for attendance logs
+
+## Notes
+
+- The system prevents duplicate attendance marking for the same person on the same day
+- Face embeddings are stored locally in `data/registered_faces/embeddings.pkl`
+- Attendance records are stored in `data/attendance.csv`
+- Make sure you have proper lighting and face the camera directly for best results
+
+## Static Frontend (GitHub Pages)
+
+If you want a browser-only demo that you can deploy on **GitHub Pages**, the repository includes a simple static frontend that uses `face-api.js` to run face detection and recognition entirely in the browser (no backend required).
+
+Files:
+
+- `frontend/index.html` — main static UI
+- `frontend/app.js` — client logic (uses models hosted publicly)
+- `frontend/styles.css` — basic styles
+
+How it works:
+
+- The frontend loads face detection & recognition models from a public CDN and uses the webcam via `getUserMedia()`.
+- Registered faces (descriptors) and attendance logs are kept in the browser's `localStorage` so data persists per-browser.
+- You can download attendance records as CSV from the UI.
+
+Deploy to GitHub Pages:
+
+1. Commit and push the repo to GitHub.
+2. In your repository Settings → Pages, set "Source" to the `main` branch and the folder to `/frontend` (or choose the branch where you put the static files).
+3. After a few minutes your site will be available at `https://<your-username>.github.io/<repo-name>/`.
+
+Limitations:
+
+- Everything is client-side: embeddings and attendance are stored per browser only (no cross-device sync). For production persistence, use a backend + storage (S3 / DB).
+- Camera access requires HTTPS (GitHub Pages is served over HTTPS, so it works).
+
+## Troubleshooting
+
+- **Model not found**: Ensure `facenet.onnx` is placed in the `models/` directory
+- **Webcam not working**: Check camera permissions and ensure no other application is using it
+- **No face detected**: Ensure good lighting and face the camera directly
+- **Import errors**: Make sure all dependencies are installed: `pip install -r requirements.txt`
